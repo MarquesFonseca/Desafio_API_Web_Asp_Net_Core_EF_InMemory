@@ -17,8 +17,8 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Estado inválido."]
-        public string EstadoId { get; set; }
-        public Estado Estado { get; set; }
+        [MaxLength(2, ErrorMessage = "Este campo deve conter 2 caracteres.")]
+        [MinLength(2, ErrorMessage = "Este campo deve conter 2 caracteres.")]
+        public string EstadoUF { get; set; }
     }
 }
