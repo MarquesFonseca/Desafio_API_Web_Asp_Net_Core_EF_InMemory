@@ -77,7 +77,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="model">Modelo via json passado pelo Body</param>
         /// <returns>Retorna uma lista de todos.</returns>        
         [HttpPost]
-        [Route("")]
+        [Route("novo")]
         public async Task<ActionResult<List<Cidade>>> Post([FromServices] DataContext context, [FromBody] Cidade model)
         {
             if (ModelState.IsValid)
@@ -146,7 +146,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="id">Informe o Id desejado para exclusão</param>
         /// <returns>Não retorna nada.</returns>
         [HttpDelete("{id}")]
-        [Route("deletar/{id:int}")]
+        [Route("remover/{id:int}")]
         public async Task<IActionResult> Deletar([FromServices] DataContext context, int id)
         {
             var cidadeAtual = await context.Cidades.FindAsync(id);
@@ -159,8 +159,8 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             context.Cidades.Remove(cidadeAtual);
             await context.SaveChangesAsync();
 
-            //return NoContent();
-            return Ok();
+            return NoContent();
+            //return Ok();
         }
     }
 }

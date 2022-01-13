@@ -57,6 +57,10 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 
             app.UseAuthorization();
 
+
+            //app.MapGet("/cidade/{id:int}", () => { "1" });
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
