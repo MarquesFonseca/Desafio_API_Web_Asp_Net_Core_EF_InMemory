@@ -14,11 +14,21 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [MaxLength(100, ErrorMessage = "Este campo deve conter entre 2 e 100 caracteres.")]
         [MinLength(2, ErrorMessage = "Este campo deve conter entre 2 e 100 caracteres.")]
-        public string Nome { get; set; }
+        public string NomeCompleto { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        [Range(1, int.MaxValue, ErrorMessage ="Estado inválido."]
-        public string EstadoId { get; set; }
-        public Estado Estado { get; set; }
+        [MaxLength(1, ErrorMessage = "Este campo deve ser 'M' (Masculino) ou 'F' (Feminino).'")]
+        [MinLength(1, ErrorMessage = "Este campo deve ser 'M' (Masculino) ou 'F' (Feminino).'")]
+        public string Sexo { get; set; }
+
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        public DateTime DataNascimento { get; set; }
+
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        public int Idade { get; set; }
+
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        public int CidadeId { get; set; }
+        public Cidade Cidade { get; set; }
     }
 }
