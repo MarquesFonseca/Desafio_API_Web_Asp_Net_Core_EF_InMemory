@@ -148,19 +148,26 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [HttpDelete("{id}")]
         [Route("remover/{id:int}")]
         public async Task<IActionResult> Deletar([FromServices] DataContext context, int id)
-        {
-            var cidadeAtual = await context.Cidades.FindAsync(id);
-            if (cidadeAtual == null)
+        {         
+            try
             {
-                //return BadRequest();
-                return NotFound();
+                var cidadeAtual = await context.Cidades.FindAsync(id);
+                if (cidadeAtual == null)
+                {
+                    //return BadRequest();
+                    return NotFound("A Cidade não foi localizada!");
+                }
+
+                context.Cidades.Remove(cidadeAtual);
+                await context.SaveChangesAsync();
+
+                return Ok();
             }
-
-            context.Cidades.Remove(cidadeAtual);
-            await context.SaveChangesAsync();
-
-            return NoContent();
-            //return Ok();
+            catch (Exception)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError,
+                    "Ocorreu um erro ao remover o registro.!");
+            }
         }
     }
 }
