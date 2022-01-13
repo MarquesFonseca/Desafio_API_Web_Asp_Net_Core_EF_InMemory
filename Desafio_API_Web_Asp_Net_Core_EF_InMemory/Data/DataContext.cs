@@ -2,11 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
 {
-    public class DataContext
+    /// <summary>
+    /// Classe DataContext (representação do nosso banco de dados, que usaremos o banco em memória.)
+    /// Erda o DbContext
+    /// </summary>
+    public class DataContext : DbContext
     {
+        /// <summary>
+        /// Por aqui se usa a conectionString(conexão com bancos, SqlServer, Oracle, MySql, etc)
+        /// </summary>
+        /// <param name="options">Neste caso, não repassaremos nenhuma ação para o DataContext.</param>
+        public DataContext(DbContextOptions<DataContext> options) : base(options) 
+        {  
+        
+        }
+
+        /// <summary>
+        /// Nossa coleção de tabelas do nosso banco de dados.
+        /// Aqui definimos quais tabelas vamos usar.
+        /// </summary>
+        public DbSet<Cidade> Cidades { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
 
     }
 }
