@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
@@ -32,6 +33,8 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("DataBase"));
+
             //Deixar nosso DatContext disponível através do "AddScoped", que é a nossa injeção de dependências do .net Core.
             //Significa que, se em algum lugar da nossa aplicação solicitar o DataContext, vai deixar em memória,
             //onde não cria uma nova versão toda vez que requisitar, ou seja, não vai abri uma nova conexão no banco.
