@@ -26,7 +26,19 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return cidades;
         }
 
-        
+        /// <summary>
+        /// Retorna uma lista de cidade, em ordem Alfabética.
+        /// É um método privado, usado internamente.
+        /// </summary>
+        /// <param name="dataContext">Acessa os dados. O "[FromServices"] indica que vai utilizar o DataContect que já está na memória</param>
+        /// <returns>Retorna toda lista de Cidades em orde A-Z</returns>
+        [HttpGet]
+        [Route("")]
+        private async Task<ActionResult<List<Cidade>>> GetOrderByCrescente([FromServices] DataContext dataContext)
+        {
+            var cidades = await dataContext.Cidades.AsNoTracking().OrderBy(x => x.Nome).ToListAsync();
+            return cidades;
+        }
 
 
     }
