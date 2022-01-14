@@ -22,13 +22,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
         public string Sexo { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
+        [Display(Name ="Infome uma data de Nascimento")]
+        [DisplayFormat(DataFormatString ="dd/MM/yyyy")]
         public DateTime DataNascimento { get; set; }
                 
         public int Idade { get; set; }
+        public DateTime DataCadastro { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [Range(1, int.MaxValue, ErrorMessage = "Cidade inválida.")]
         public int CidadeId { get; set; }
         public Cidade Cidade { get; set; }
+
     }
 }

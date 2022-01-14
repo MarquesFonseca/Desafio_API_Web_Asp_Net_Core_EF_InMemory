@@ -87,8 +87,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Marques Silva Fonseca",
                     Sexo = "M",
                     DataNascimento = new DateTime(1986, 1, 2),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(1986, 1, 2)),
-                    CidadeId = 1
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(1986, 1, 2)),
+                    CidadeId = 1,
+                    DataCadastro = DateTime.Now
                 },
                 new Cliente()
                 {
@@ -96,8 +97,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Maria Silva Rocha",
                     Sexo = "F",
                     DataNascimento = new DateTime(1960, 1, 31),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(1960, 1, 31)),
-                    CidadeId = 1
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(1960, 1, 31)),
+                    CidadeId = 1,
+                    DataCadastro = DateTime.Now
                 },
                 new Cliente()
                 {
@@ -105,8 +107,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Roque Alves Fonseca",
                     Sexo = "M",
                     DataNascimento = new DateTime(1961, 8, 17),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(1961, 8, 17)),
-                    CidadeId = 2
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(1961, 8, 17)),
+                    CidadeId = 2,
+                    DataCadastro = DateTime.Now
                 },
                 new Cliente()
                 {
@@ -114,8 +117,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Roselene Silva Fonseca",
                     Sexo = "F",
                     DataNascimento = new DateTime(1984, 2, 10),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(1984, 2, 10)),
-                    CidadeId = 2
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(1984, 2, 10)),
+                    CidadeId = 2,
+                    DataCadastro = DateTime.Now
                 },
                 new Cliente()
                 {
@@ -123,8 +127,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Lauanda da Silva Ferreira Fonseca",
                     Sexo = "F",
                     DataNascimento = new DateTime(1985, 5, 12),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(1985, 5, 12)),
-                    CidadeId = 2
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(1985, 5, 12)),
+                    CidadeId = 2,
+                    DataCadastro = DateTime.Now
                 },
                 new Cliente()
                 {
@@ -132,8 +137,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
                     NomeCompleto = "Maitê Marques Ferreira Fonseca",
                     Sexo = "F",
                     DataNascimento = new DateTime(2021, 10, 27),
-                    Idade = Utils.FormataData.RetornaIdade(new DateTime(2021, 10, 27)),
-                    CidadeId = 2
+                    Idade = Utils.FormatacaoData.RetornaIdade(new DateTime(2021, 10, 27)),
+                    CidadeId = 2,
+                    DataCadastro = DateTime.Now
                 }
             ); 
         }

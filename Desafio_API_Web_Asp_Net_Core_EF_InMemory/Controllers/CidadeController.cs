@@ -20,7 +20,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma lista de Cidades</returns>
         [HttpGet]//definindo o verbo utilizado. Se não colocar nada, por padrão ele assume o GET
         [Route("")]//rota vazia, ou seja, será a mesma rota definida no controller
-        public async Task<ActionResult<List<Cidade>>> Get([FromServices] DataContext dataContext)
+        public async Task<ActionResult<List<Cidade>>> GetCidades([FromServices] DataContext dataContext)
         {
             //é o método responsável por garantir que o squema com o contexxto esteja criado. 
             //caso não exista, o banco de dados e todo o seu esquema são criados
@@ -39,7 +39,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma lista de Cidades em ordem Descrescente</returns>
         [HttpGet]
         [Route("")]
-        private async Task<ActionResult<List<Cidade>>> GetOrderByDesc([FromServices] DataContext dataContext)
+        private async Task<ActionResult<List<Cidade>>> GetCidadeOrderByDesc([FromServices] DataContext dataContext)
         {
             var cidades = await dataContext.Cidades.AsNoTracking().OrderByDescending(x => x.Id).ToListAsync();
             return cidades;
@@ -53,7 +53,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma Cidade</returns>
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<Cidade>> GetById([FromServices] DataContext context, int id)
+        public async Task<ActionResult<Cidade>> GetCidadeById([FromServices] DataContext context, int id)
         {
             var cidade = await context.Cidades.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return cidade;
@@ -83,7 +83,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma lista de todos.</returns>        
         [HttpPost]
         [Route("novo")]
-        public async Task<ActionResult<List<Cidade>>> Post([FromServices] DataContext context, [FromBody] Cidade model)
+        public async Task<ActionResult<List<Cidade>>> CreateCidade([FromServices] DataContext context, [FromBody] Cidade model)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 //model.Id = g.ToString();
                 context.Cidades.Add(model);
                 await context.SaveChangesAsync();
-                return await GetOrderByDesc(context);
+                return await GetCidadeOrderByDesc(context);
             }
             else
             {
