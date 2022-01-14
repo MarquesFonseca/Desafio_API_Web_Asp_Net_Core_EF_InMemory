@@ -23,8 +23,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public DateTime DataNascimento { get; set; }
-
-        [Required(ErrorMessage = "Este campo é obrigatório.")]
+                
         public int Idade { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]

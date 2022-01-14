@@ -22,6 +22,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [Route("")]//rota vazia, ou seja, será a mesma rota definida no controller
         public async Task<ActionResult<List<Cidade>>> Get([FromServices] DataContext dataContext)
         {
+            //é o método responsável por garantir que o squema com o contexxto esteja criado. 
+            //caso não exista, o banco de dados e todo o seu esquema são criados
+            //e também garante que seja compatível com o modelo para este contexto.
+            dataContext.Database.EnsureCreated();
+
             var cidades = await dataContext.Cidades.AsNoTracking().ToListAsync();
             return cidades;
         }
@@ -148,7 +153,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [HttpDelete("{id}")]
         [Route("remover/{id:int}")]
         public async Task<IActionResult> Deletar([FromServices] DataContext context, int id)
-        {         
+        {
             try
             {
                 var cidadeAtual = await context.Cidades.FindAsync(id);
@@ -161,6 +166,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 context.Cidades.Remove(cidadeAtual);
                 await context.SaveChangesAsync();
 
+                return NotFound("A Cidade removida com sucesso!");
                 return Ok();
             }
             catch (Exception)

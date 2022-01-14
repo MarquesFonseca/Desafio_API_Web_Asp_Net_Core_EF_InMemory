@@ -65,7 +65,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="model"></param>
         /// <returns>Retorna o Cliente recém inserido.</returns>
         [HttpPost]
-        [Route("")]
+        [Route("novo")]
         public async Task<ActionResult<Cliente>> Post(
         [FromServices] DataContext context,
         [FromBody] Cliente model)
@@ -77,8 +77,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 {
                     context.Clientes.Add(model);
                     await context.SaveChangesAsync();
-                    var cidade = await context.Cidades.FindAsync(model.Id);
+                    var cidade = await context.Cidades.FindAsync(model.CidadeId);
                     model.Cidade = cidade;
+                    model.Idade = model.Idade == 0 ? Utils.FormataData.RetornaIdade(model.DataNascimento) : model.Idade; //condição ternária
                     return model;
                 }
                 else
@@ -86,7 +87,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                     return BadRequest(ModelState);
                 }
             }
-            return BadRequest(ModelState);
+            return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
         }
+
+
     }
 }

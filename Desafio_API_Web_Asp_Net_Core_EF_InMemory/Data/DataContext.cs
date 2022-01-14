@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
 {
@@ -17,9 +18,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
         /// Por aqui se usa a conectionString(conexão com bancos, SqlServer, Oracle, MySql, etc)
         /// </summary>
         /// <param name="options">Neste caso, não repassaremos nenhuma ação para o DataContext.</param>
-        public DataContext(DbContextOptions<DataContext> options) : base(options) 
-        {  
-        
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+
         }
 
         /// <summary>
@@ -29,5 +30,15 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //carrega cidades
+            IniciaDadosIniciais.CarregaCidade(modelBuilder);
+
+            //carrega Clientes
+            IniciaDadosIniciais.CarregaClientes(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
