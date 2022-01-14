@@ -9,8 +9,8 @@ using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
+    [Route("api/cidade")] //Como não definimos nenhuma rota no endPoints(Startup.cs), o mapeamento das rotas serão pela rotas do controller atual
     [ApiController] //definindo para a classe Contoller, que usaremos o ApiController
-    [Route("cidade")] //Como não definimos nenhuma rota no endPoints(Startup.cs), o mapeamento das rotas serão pela rotas do controller atual
     public class CidadeyController : ControllerBase
     {
         /// <summary>

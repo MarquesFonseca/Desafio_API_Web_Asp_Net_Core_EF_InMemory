@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Options;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 {
@@ -41,6 +44,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
             //e assim que a requisição terminar, a aplicação vai destruir o DataContext, para não deixar vestígios na memória.
             services.AddScoped<DataContext, DataContext>();
             services.AddControllers();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Compass.Uol",
+                    Description = "API Asp NET Core 3.1 Entity Framework InMemory",
+                    TermsOfService = new Uri("https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory")
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,9 +71,12 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 
             app.UseAuthorization();
 
-
-            //app.MapGet("/cidade/{id:int}", () => { "1" });
-
+            app.UseSwagger();
+            // Swagger JSON endpoint
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseEndpoints(endpoints =>
             {

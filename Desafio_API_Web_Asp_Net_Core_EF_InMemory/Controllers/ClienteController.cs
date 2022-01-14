@@ -10,8 +10,8 @@ using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
+    [Route("api/cliente")]
     [ApiController]
-    [Route("cliente")]
     public class ClienteController : Controller
     {
         [HttpGet]
