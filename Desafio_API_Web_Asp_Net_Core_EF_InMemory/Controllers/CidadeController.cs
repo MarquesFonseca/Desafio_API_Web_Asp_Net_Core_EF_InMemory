@@ -59,6 +59,28 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return cidade;
         }
 
+
+
+        [HttpGet]
+        [HttpHead]
+        [Route("pesquisar/{nomeCidadeInformada}")]
+        public async Task<ActionResult<List<Cidade>>> GetCidadeByNome([FromServices] DataContext context, string nomeCidadeInformada)
+        {
+            var cidade = await context.Cidades
+                .AsNoTracking()
+                .Where(x => 
+                x.Nome.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()) || 
+                x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
+                //.Include(x => x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
+                .ToListAsync();
+            
+            return cidade;
+        }
+
+
+
+
+
         /// <summary>
         /// Verifica se o Id da Cidade existe na base de dados.
         /// Método privado, só acessa internamente.
