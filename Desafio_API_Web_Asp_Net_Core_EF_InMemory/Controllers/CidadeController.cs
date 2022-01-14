@@ -28,7 +28,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             dataContext.Database.EnsureCreated();
 
             var cidades = await dataContext.Cidades.AsNoTracking().ToListAsync();
-            return cidades;
+            return cidades.FormatarCampos();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         private async Task<ActionResult<List<Cidade>>> GetCidadeOrderByDesc([FromServices] DataContext dataContext)
         {
             var cidades = await dataContext.Cidades.AsNoTracking().OrderByDescending(x => x.Id).ToListAsync();
-            return cidades;
+            return cidades.FormatarCampos();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         public async Task<ActionResult<Cidade>> GetCidadeById([FromServices] DataContext context, int id)
         {
             var cidade = await context.Cidades.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            return cidade;
+            return cidade.FormatarCampos();
         }
 
 
@@ -68,18 +68,14 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         {
             var cidade = await context.Cidades
                 .AsNoTracking()
-                .Where(x => 
-                x.Nome.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()) || 
+                .Where(x =>
+                x.Nome.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()) ||
                 x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
                 //.Include(x => x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
                 .ToListAsync();
-            
-            return cidade;
+
+            return cidade.FormatarCampos();
         }
-
-
-
-
 
         /// <summary>
         /// Verifica se o Id da Cidade existe na base de dados.
@@ -130,7 +126,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna a Cidade já alterada.</returns>
         [HttpPut("{id}")]
         [Route("alterar/{id:int}")]
-        public async Task<ActionResult<Cidade>> Alterar([FromServices] DataContext context, [FromBody] Cidade model, int id)
+        public async Task<ActionResult<Cidade>> AlterarCidade([FromServices] DataContext context, [FromBody] Cidade model, int id)
         {
             if (model.Id != id)
             {
@@ -139,9 +135,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 
             bool existe = await context.Cidades.AnyAsync(x => x.Id == id);
             if (!existe)
-            {
-                return NotFound();
-            }
+                return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
 
             try
             {
@@ -149,7 +143,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
-            {
+            {                
                 var cidade = await context.Cidades.FindAsync(id);
                 if (cidade == null)
                 {
@@ -163,7 +157,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             }
 
             var retorno = await context.Cidades.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            return retorno;
+            return retorno.FormatarCampos();
         }
 
         /// <summary>
@@ -174,22 +168,22 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Não retorna nada.</returns>
         [HttpDelete("{id}")]
         [Route("remover/{id:int}")]
-        public async Task<IActionResult> Deletar([FromServices] DataContext context, int id)
+        public async Task<IActionResult> RemoverCidade([FromServices] DataContext context, int id)
         {
+            var cidadeAtual = await context.Cidades.FindAsync(id);
+            if (cidadeAtual == null)
+            {
+                //return BadRequest();
+                return NotFound("A Cidade não foi localizada!");
+            }
+
             try
             {
-                var cidadeAtual = await context.Cidades.FindAsync(id);
-                if (cidadeAtual == null)
-                {
-                    //return BadRequest();
-                    return NotFound("A Cidade não foi localizada!");
-                }
-
                 context.Cidades.Remove(cidadeAtual);
                 await context.SaveChangesAsync();
 
                 return NotFound("A Cidade removida com sucesso!");
-                return Ok();
+                //return Ok();
             }
             catch (Exception)
             {

@@ -13,30 +13,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
     [Route("cliente")]
     public class ClienteController : Controller
     {
-        /// <summary>
-        /// Retorna todos os clientes cadastrados
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns>Produtos</returns>
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Cliente>>> GetClientes([FromServices] DataContext context)
         {
-            //model.Idade = model.Idade == 0 ? Utils.FormataData.RetornaIdade(model.DataNascimento) : model.Idade; //condição ternária
-
             var clientes = await context.Clientes
                 .Include(x => x.Cidade)
                 .AsNoTracking()
                 .ToListAsync();
 
-            foreach (Cliente item in clientes)
-            {
-                item.Idade = item.Idade == 0 ? Utils.FormatacaoData.RetornaIdade(Convert.ToDateTime(item.DataNascimento)) : item.Idade; //condição ternária
-                item.DataNascimento = Convert.ToDateTime(item.DataNascimento.ToShortDateString());
-            }
-
-            return clientes;
-        }
+            return clientes.FormatarCampos();
+        }        
 
         [HttpGet]
         [Route("{id:int}")]
@@ -46,7 +33,20 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 .Include(x => x.Cidade)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
-            return cliente;
+            return cliente.FormatarCampos();
+        }
+
+        [HttpGet]
+        [Route("pesquisar/nome/{nomeCliente}")]
+        public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, string nomeCliente)
+        {
+            var cliente = await context.Clientes
+                .Include(x => x.Cidade)
+                .AsNoTracking()
+                .Where(x => x.NomeCompleto.ToUpper().Contains(nomeCliente.ToUpper()))
+                .ToListAsync();
+
+            return cliente.FormatarCampos();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="CidadeId"></param>
         /// <returns>Retorna uma lista de clientes de uma mesma cidade.</returns>
         [HttpGet]
-        [Route("cidades/{id:int}")]
+        [Route("pesquisar/cidade/{CidadeId:int}")]
         public async Task<ActionResult<List<Cliente>>> GetClientesByCidadeId([FromServices] DataContext context, int CidadeId)
         {
             var clientes = await context.Clientes
@@ -64,7 +64,8 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 .AsNoTracking()
                 .Where(x => x.CidadeId == CidadeId)
                 .ToListAsync();
-            return clientes;
+
+            return clientes.FormatarCampos();
         }
 
         /// <summary>
@@ -75,9 +76,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna o Cliente recém inserido.</returns>
         [HttpPost]
         [Route("novo")]
-        public async Task<ActionResult<Cliente>> CreateCidade(
-        [FromServices] DataContext context,
-        [FromBody] Cliente model)
+        public async Task<ActionResult<Cliente>> CreateCidade([FromServices] DataContext context, [FromBody] Cliente model)
         {
             if (Utils.FormatacaoData.VerificaDataSeValida(model.DataNascimento) == false)
                 return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
@@ -86,21 +85,88 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             if (existeACidadeInformada == false)//vai inserir um novo cliente se existir a cidade informada.
                 return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
 
-            if (ModelState.IsValid)
+            try
             {
-                model.Cidade = await context.Cidades.FindAsync(model.CidadeId);
-                model.Idade = model.Idade == 0 ? Utils.FormatacaoData.RetornaIdade(model.DataNascimento) : model.Idade; //condição ternária
+                if (ModelState.IsValid)
+                {
+                    model.FormatarCampos();
+
+                    model.Cidade = await context.Cidades.FindAsync(model.CidadeId);                    
+                    model.DataCadastro = DateTime.Now;
+
+                    context.Clientes.Add(model);
+                    await context.SaveChangesAsync();
+
+                    return model;
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError,
+                    "Ocorreu um erro ao gravar o registro.!");
+            }
+        }
+        /// <summary>
+        /// Retorna todos os clientes cadastrados
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns>Produtos</returns>
+
+        [HttpPut("{id}")]
+        [Route("alterar/{id:int}")]
+        public async Task<ActionResult<Cliente>> AlterarCliente([FromServices] DataContext dataContext, [FromBody] Cliente model, int id)
+        {
+            #region verifica se a data é válida
+            if (Utils.FormatacaoData.VerificaDataSeValida(model.DataNascimento) == false)
+                return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
+            #endregion
+
+            #region verifica se a cidade informada existe
+            bool existeACidadeInformada = await dataContext.Cidades.AnyAsync(x => x.Id == model.CidadeId);
+            if (existeACidadeInformada == false)//vai inserir um novo cliente se existir a cidade informada.
+                return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
+            #endregion
+
+            #region Verifica se o cliente existe no banco
+            bool existe = await dataContext.Clientes.AnyAsync(x => x.Id == id);
+            if (!existe)
+                return NotFound("Cliente não encontrado");
+            #endregion
+
+            if (model.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var cliente = new Cliente();
+
+            try
+            {
+                model.FormatarCampos();
+
+                model.Cidade = await dataContext.Cidades.FindAsync(model.CidadeId);
                 model.DataCadastro = DateTime.Now;
 
-                context.Clientes.Add(model);
-                await context.SaveChangesAsync();
-
-                return model;
+                dataContext.Entry(model).State = EntityState.Modified;
+                await dataContext.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateConcurrencyException)
             {
-                return BadRequest(ModelState);
+                cliente = await dataContext.Clientes.FindAsync(id);
+                if (cliente == null)
+                    //return BadRequest();
+                    return NotFound("Ocorreu um erro ao alterar o cliente atual. Não foi possível retornar o cliente.");
+                else
+                    return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError,
+                    "Ocorreu um erro ao remover o registro.!");
             }
+
+            var retorno = await GetClienteById(dataContext, id);
+            return retorno;
         }
 
     }
