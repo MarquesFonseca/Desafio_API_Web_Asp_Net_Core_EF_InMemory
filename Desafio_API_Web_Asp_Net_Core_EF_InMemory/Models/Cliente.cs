@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
 {
@@ -44,7 +45,8 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
         /// <returns>Retorna o objeto Cliente já formatado.</returns>
         public static Cliente FormatarCampos(this Cliente _cliente)
         {
-            _cliente.NomeCompleto = _cliente.NomeCompleto.ToUpperInvariant();
+            if (_cliente == null) return _cliente;
+            _cliente.NomeCompleto = _cliente.NomeCompleto.Trim().IniciaisMaiusculoDeCadaPalavra();
             _cliente.Idade = Utils.FormatacaoData.RetornaIdade(Convert.ToDateTime(_cliente.DataNascimento));
             _cliente.DataNascimento = Convert.ToDateTime(_cliente.DataNascimento.ToShortDateString());
             return _cliente;

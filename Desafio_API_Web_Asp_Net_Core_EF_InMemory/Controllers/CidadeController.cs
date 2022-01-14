@@ -59,8 +59,6 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return cidade.FormatarCampos();
         }
 
-
-
         [HttpGet]
         [HttpHead]
         [Route("pesquisar/{nomeCidadeInformada}")]
@@ -182,8 +180,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 context.Cidades.Remove(cidadeAtual);
                 await context.SaveChangesAsync();
 
-                return NotFound("A Cidade removida com sucesso!");
-                //return Ok();
+                return Ok("A Cidade removida com sucesso!");
             }
             catch (Exception)
             {

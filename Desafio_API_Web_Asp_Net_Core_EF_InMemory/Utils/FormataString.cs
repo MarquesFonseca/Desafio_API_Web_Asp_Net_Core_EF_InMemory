@@ -52,6 +52,23 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils
         }
 
         /// <summary>
+        /// Remove qualquer acento
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RemoveAcentos(this string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
+        }
+
+        /// <summary>
         /// Remove o acento de todas as palavras do texto.
         /// </summary>
         /// <param name="match">Texto a ser alterado</param>

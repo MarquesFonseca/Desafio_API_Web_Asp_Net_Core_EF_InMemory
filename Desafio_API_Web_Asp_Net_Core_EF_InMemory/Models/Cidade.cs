@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
 {
@@ -30,8 +31,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models
         /// <returns>Retorna o objeto Cidade já formatada.</returns>
         public static Cidade FormatarCampos(this Cidade _cidade)
         {
-            _cidade.Nome = _cidade.Nome.ToUpperInvariant();
-            _cidade.EstadoUF = _cidade.EstadoUF.ToUpper();
+            if (_cidade == null) return _cidade;
+            _cidade.Nome = _cidade.Nome.Trim().IniciaisMaiusculoDeCadaPalavra();
+            _cidade.EstadoUF = _cidade.EstadoUF.ToUpper().Trim().IniciaisMaiusculoDeCadaPalavra();
             return _cidade;
         }
 

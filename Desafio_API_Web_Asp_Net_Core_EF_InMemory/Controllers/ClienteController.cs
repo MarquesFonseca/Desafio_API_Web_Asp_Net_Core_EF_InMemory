@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
@@ -40,10 +41,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [Route("pesquisar/nome/{nomeCliente}")]
         public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, string nomeCliente)
         {
+
             var cliente = await context.Clientes
                 .Include(x => x.Cidade)
                 .AsNoTracking()
-                .Where(x => x.NomeCompleto.ToUpper().Contains(nomeCliente.ToUpper()))
+                .Where(x => x.NomeCompleto.ToUpper().RemoveAcentos().Contains(nomeCliente.ToUpper().RemoveAcentos()))
                 .ToListAsync();
 
             return cliente.FormatarCampos();
@@ -169,5 +171,36 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return retorno;
         }
 
+        /// <summary>
+        /// Deleta/Remove um cliente repassando via "Rota" o id desejado para exclusão
+        /// </summary>
+        /// <param name="context">Representação do nosso banco de dados</param>
+        /// <param name="id">Informe o Id desejado para exclusão</param>
+        /// <returns>Não retorna nada.</returns>
+        [HttpDelete("{id}")]
+        [Route("remover/{id:int}")]
+        public async Task<IActionResult> RemoverCliente([FromServices] DataContext context, int id)
+        {
+            var clienteAtual = await context.Clientes.FindAsync(id);
+            if (clienteAtual == null)
+            {
+                //return BadRequest();
+                return NotFound("O Cliente não foi localizada!");
+            }
+
+            try
+            {
+                context.Clientes.Remove(clienteAtual);
+                await context.SaveChangesAsync();
+
+                //return NotFound("Cliente removida com sucesso!");
+                return Ok("Cliente removida com sucesso!");
+            }
+            catch (Exception)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError,
+                    "Ocorreu um erro ao remover o registro.!");
+            }
+        }
     }
 }
