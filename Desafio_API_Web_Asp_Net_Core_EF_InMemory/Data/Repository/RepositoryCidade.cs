@@ -72,10 +72,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
             return await GetCidadeByModel(model);
         }
 
-        public async Task<Cidade> AlterarCidade(Cidade model)
+        public async Task<Cidade> AlterarCidade(Cidade model, int id)
         {
             try
             {
+                model.Id = id;
                 _dataContext.Entry(model).State = EntityState.Modified;
                 await _dataContext.SaveChangesAsync();
             }

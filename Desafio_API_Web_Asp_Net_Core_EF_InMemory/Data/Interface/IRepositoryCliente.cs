@@ -18,7 +18,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface
 
         public Task<bool> CadastrarCliente(Cliente _cliente);
 
-        public Task<Cliente> AlterarCliente(Cliente _cliente);
+        public Task<Cliente> AlterarCliente(Cliente _cliente, int id);
 
         public Task<bool> RemoverCliente(int id);
 

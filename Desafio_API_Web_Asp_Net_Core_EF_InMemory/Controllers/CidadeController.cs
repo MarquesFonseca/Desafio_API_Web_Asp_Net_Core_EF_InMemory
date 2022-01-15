@@ -87,18 +87,13 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [Route("alterar/{id:int}")]
         public async Task<ActionResult<Cidade>> AlterarCidade([FromBody] Cidade model, int id)
         {
-            if (model.Id != id)
-            {
-                return BadRequest();
-            }
-
             bool existe = await _repositoryCidade.SeExisteCidade(id);
             if (!existe)
                 return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
 
             try
             {
-                await _repositoryCidade.AlterarCidade(model);
+                await _repositoryCidade.AlterarCidade(model, id);
             }
             catch (DbUpdateConcurrencyException ex)
             {

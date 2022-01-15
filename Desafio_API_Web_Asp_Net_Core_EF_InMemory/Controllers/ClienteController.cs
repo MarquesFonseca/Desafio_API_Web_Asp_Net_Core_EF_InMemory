@@ -161,14 +161,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 return NotFound("Cliente não encontrado!");
             #endregion
 
-            if (cliente.Id != id)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                await _repositoryCliente.AlterarCliente(cliente);
+                await _repositoryCliente.AlterarCliente(cliente, id);
                 cliente.Cidade = await _repositoryCidade.GetCidadeById(cliente.CidadeId);
                 return cliente;
             }

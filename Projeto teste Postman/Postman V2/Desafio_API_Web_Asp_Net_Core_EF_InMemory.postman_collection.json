@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "6c85188b-45b9-48ae-a7c6-6cdb5d7cc595",
+		"name": "Desafio_API_Web_Asp_Net_Core_EF_InMemory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cidade",
+			"item": [
+				{
+					"name": "Visualizar Cidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cidade"
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Cidades 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cidade/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Cidade Id 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade 1 - Com alteração\",\r\n\t\"estadouf\" : \"AC\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/alterar/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Cidade Id 2",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade 2 - Com alteração\",\r\n\t\"estadouf\" : \"TO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/alterar/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Cidade Id 3",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade 3 - Com alteração\",\r\n\t\"estadouf\" : \"MA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/alterar/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Nova Cidade",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade Nova Cidade 1\",\r\n\t\"estadouf\" : \"TO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Nova Cidade",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade Novo Cidade 2\",\r\n\t\"estadouf\" : \"GO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Nova Cidade",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nome\" : \"Cidade Nova Cidade 3\",\r\n\t\"estadouf\" : \"MG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cidade/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cidade Id 1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "https://localhost:5001/api/cidade/remover/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cidade Id 2",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "https://localhost:5001/api/cidade/remover/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cidade Id 3",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "https://localhost:5001/api/cidade/remover/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Visualizar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cliente"
+					},
+					"response": []
+				},
+				{
+					"name": "Pesquisar Cliente Id 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cliente/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Pesquisar cliente pelo Nome ou parte do Nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cliente/pesquisar/nome/silva"
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Todos os Clientes da Cidade 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:5001/api/cliente/pesquisar/cidade/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterando cliente 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\t\"nomeCompleto\": \"Cliente depois da alteração\",\r\n\t\t\"sexo\": \"M\",\r\n\t\t\"dataNascimento\": \"1999-01-02T00:00:00\",\r\n\t\t\"idade\": 0,\r\n\t\t\"cidadeId\":2\t\t\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cliente/alterar/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar novo Cliente para a Cidade Id 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nomecompleto\" : \"Lucirene Ferreira da Silva\",\r\n\t\"sexo\" : \"F\",\r\n\t\"datanascimento\" : \"1959-12-06\",\r\n\t\"idade\" : 0,\r\n\t\"cidadeid\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cliente/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar novo Cliente para a Cidade Id 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nomecompleto\" : \"Roberto da Silva\",\r\n\t\"sexo\" : \"M\",\r\n\t\"datanascimento\" : \"1992-11-15\",\r\n\t\"idade\" : 0,\r\n\t\"cidadeid\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cliente/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar novo Cliente para a Cidade Id 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nomecompleto\" : \"Francisca Silva Fonseca\",\r\n\t\"sexo\" : \"F\",\r\n\t\"datanascimento\" : \"1995-09-05\",\r\n\t\"idade\" : 0,\r\n\t\"cidadeid\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cliente/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar novo Cliente para a Cidade Id 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nomecompleto\" : \"Rafael Suarez\",\r\n\t\"sexo\" : \"M\",\r\n\t\"datanascimento\" : \"1986-07-20\",\r\n\t\"idade\" : 0,\r\n\t\"cidadeid\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:5001/api/cliente/novo"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cliente 1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "https://localhost:5001/api/cliente/remover/1"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

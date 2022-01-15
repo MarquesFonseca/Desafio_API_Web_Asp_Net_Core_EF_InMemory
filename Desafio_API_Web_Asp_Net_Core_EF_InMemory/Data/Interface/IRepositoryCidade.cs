@@ -19,7 +19,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface
 
         public Task<Cidade> CadastrarCidade(Cidade model);
 
-        public Task<Cidade> AlterarCidade(Cidade model);
+        public Task<Cidade> AlterarCidade(Cidade model, int id);
 
         public Task<bool> RemoverCidade(int id);
     }
