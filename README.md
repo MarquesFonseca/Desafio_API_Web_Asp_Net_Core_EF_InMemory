@@ -229,7 +229,8 @@ Usei [GitKraken](https://www.gitkraken.com/git-client) para controle de versão.
 
 * **Marques Silva Fonseca** - 
 - [marquesfonseca](https://github.com/MarquesFonseca)
-- [Email](mailto:marques-fonseca@hotmail.com)
-- [Email](mailto:marquesfonseca@gmail.com)
+- [Email](mailto:marques-fonseca@hotmail.com)[marques-fonseca@hotmail.com]
+- [Email](mailto:marquesfonseca@gmail.com)[marquesfonseca@gmail.com]
+- [Telefone][(63) 99208-2226]
 
 
