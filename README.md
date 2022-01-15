@@ -69,37 +69,41 @@ O que a API faz:
    - https://localhost:5001/api/cidade/2
 
 - [x] Visualiza cidade com Id 3
+   - Lista a cidade com id = 2
    - https://localhost:5001/api/cidade/3
 
 - [x] Alterar cidade com Id 1
+   - https://localhost:5001/api/cidade/alterar/1
+   - Body - raw - Json
    ```
    {
     "nome" : "Cidade 1 - Com alteração",
     "estadouf" : "AC"
    }
    ```
-   - https://localhost:5001/api/cidade/alterar/1
 
 - [x] Alterar cidade com Id 2
+   - https://localhost:5001/api/cidade/alterar/2
+   - Body - raw - Json
    ```
    {
     "nome" : "Cidade 2 - Com alteração",
     "estadouf" : "TO"
    }
    ```
-   - https://localhost:5001/api/cidade/alterar/2
 
 - [x] Alterar cidade com Id 3
+   - https://localhost:5001/api/cidade/alterar/3
+   - Body - raw - Json
    ```
    {
     "nome" : "Cidade 3 - Com alteração",
     "estadouf" : "MA"
    }
    ```
-   - https://localhost:5001/api/cidade/alterar/3
 
 - [x] Cadastrar nova cidade
-   Body - raw - Json
+   - Body - raw - Json
     ```
     {
      "nome" : "Cidade Nova Cidade 1",
@@ -109,7 +113,7 @@ O que a API faz:
    - https://localhost:5001/api/cidade/novo
 
 - [x] Cadastrar nova cidade
-   Body - raw - Json
+   - Body - raw - Json
     ```
     {
      "nome" : "Cidade Novo Cidade 2",
