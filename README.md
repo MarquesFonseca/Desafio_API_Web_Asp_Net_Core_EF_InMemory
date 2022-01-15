@@ -61,15 +61,12 @@ O que a API faz:
    - https://localhost:5001/api/cidade
 
 - [x] Visualiza cidade com Id 1
-   - Lista a cidade com id = 1
    - https://localhost:5001/api/cidade/1
 
 - [x] Visualiza cidade com Id 2
-   - Lista a cidade com id = 2
    - https://localhost:5001/api/cidade/2
 
 - [x] Visualiza cidade com Id 3
-   - Lista a cidade com id = 2
    - https://localhost:5001/api/cidade/3
 
 - [x] Alterar cidade com Id 1
@@ -103,6 +100,7 @@ O que a API faz:
    ```
 
 - [x] Cadastrar nova cidade
+   - https://localhost:5001/api/cidade/novo
    - Body - raw - Json
     ```
     {
@@ -110,9 +108,9 @@ O que a API faz:
      "estadouf" : "TO"
     }
     ```
-   - https://localhost:5001/api/cidade/novo
 
 - [x] Cadastrar nova cidade
+   - https://localhost:5001/api/cidade/novo
    - Body - raw - Json
     ```
     {
@@ -120,17 +118,16 @@ O que a API faz:
      "estadouf" : "GO"
     }
     ```
-   - https://localhost:5001/api/cidade/novo
 
 - [x] Cadastrar nova cidade
-   Body - raw - Json
+   - https://localhost:5001/api/cidade/novo
+   - Body - raw - Json
     ```
     {
      "nome" : "Cidade Nova Cidade 3",
      "estadouf" : "MG"
     }
     ```
-   - https://localhost:5001/api/cidade/novo
    
 - [x] Remover cidade Id 1
    - https://localhost:5001/api/cidade/remover/1
@@ -140,15 +137,85 @@ O que a API faz:
    - 
 - [x] Remover cidade Id 3
    - https://localhost:5001/api/cidade/remover/3
-   
+
+----------------------------------------------------------------------
    
 [x] Pasta Cliente
-- [x] Visualizar cidades
-   - Lista todas as cidades já pré inseridas no banco.
-   - https://localhost:5001/api/cidade
+- [x] Visualizar Clientes
+   - Lista todas os clientes já pré inseridas no banco.
+   - https://localhost:5001/api/clientes
 
+- [x] Pesquisar cliente com Id 1
+   - https://localhost:5001/api/cliente/1
+
+- [x] Pesquisar cliente pelo Nome ou parte do Nome
+   - ex: ...nome/'silva' ou ...nome/'marques'
+   - https://localhost:5001/api/cliente/pesquisar/nome/silva
+
+- [x] Pesquisar todos os clientes que pertencem à cidade id 1
+   - https://localhost:5001/api/cliente/pesquisar/cidade/1
    
-   
+- [x] Alterar o cliente id 1
+   - https://localhost:5001/api/cliente/alterar/2 
+    ```
+   {
+		"nomeCompleto": "Cliente depois da alteração",
+		"sexo": "M",
+		"dataNascimento": "1999-01-02T00:00:00",
+		"idade": 0,
+		"cidadeId":2		
+   }
+    ```   
+
+- [x] Cadastrar um novo cliente para a cidade id 1
+   - https://localhost:5001/api/cliente/novo 
+    ```
+   {
+      "nomecompleto" : "Lucirene Ferreira da Silva",
+      "sexo" : "F",
+      "datanascimento" : "1959-12-06",
+      "idade" : 0,
+      "cidadeid" : 1
+   }
+    ```   
+
+- [x] Cadastrar um novo cliente para a cidade id 1
+   - https://localhost:5001/api/cliente/novo 
+    ```
+   {
+      "nomecompleto" : "Roberto da Silva",
+      "sexo" : "M",
+      "datanascimento" : "1992-11-15",
+      "idade" : 0,
+      "cidadeid" : 1
+   }
+    ```   
+- [x] Cadastrar um novo cliente para a cidade id 2
+   - https://localhost:5001/api/cliente/novo 
+    ```
+   {
+      "nomecompleto" : "Francisca Silva Fonseca",
+      "sexo" : "F",
+      "datanascimento" : "1995-09-05",
+      "idade" : 0,
+      "cidadeid" : 2
+   }
+    ```   
+
+- [x] Cadastrar um novo cliente para a cidade id 2
+   - https://localhost:5001/api/cliente/novo 
+    ```
+   {
+      "nomecompleto" : "Rafael Suarez",
+      "sexo" : "M",
+      "datanascimento" : "1986-07-20",
+      "idade" : 0,
+      "cidadeid" : 2
+   }
+    ```       
+- [x] Remover Cliente id 1
+   - https://localhost:5001/api/cliente/remover/1
+
 
 ## 📌 Versão
 
