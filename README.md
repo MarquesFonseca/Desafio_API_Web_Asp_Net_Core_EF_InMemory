@@ -160,6 +160,7 @@ O que a API faz:
    
 - [x] Alterar o cliente id 1
    - https://localhost:5001/api/cliente/alterar/2 
+   - Body - raw - Json
     ```
    {
 		"nomeCompleto": "Cliente depois da alteração",
@@ -172,6 +173,7 @@ O que a API faz:
 
 - [x] Cadastrar um novo cliente para a cidade id 1
    - https://localhost:5001/api/cliente/novo 
+   - Body - raw - Json
     ```
    {
       "nomecompleto" : "Lucirene Ferreira da Silva",
@@ -184,6 +186,7 @@ O que a API faz:
 
 - [x] Cadastrar um novo cliente para a cidade id 1
    - https://localhost:5001/api/cliente/novo 
+   - Body - raw - Json
     ```
    {
       "nomecompleto" : "Roberto da Silva",
@@ -195,6 +198,7 @@ O que a API faz:
     ```   
 - [x] Cadastrar um novo cliente para a cidade id 2
    - https://localhost:5001/api/cliente/novo 
+   - Body - raw - Json
     ```
    {
       "nomecompleto" : "Francisca Silva Fonseca",
@@ -207,6 +211,7 @@ O que a API faz:
 
 - [x] Cadastrar um novo cliente para a cidade id 2
    - https://localhost:5001/api/cliente/novo 
+   - Body - raw - Json
     ```
    {
       "nomecompleto" : "Rafael Suarez",
