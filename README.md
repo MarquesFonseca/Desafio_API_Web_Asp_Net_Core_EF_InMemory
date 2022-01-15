@@ -40,11 +40,7 @@ O que a API faz:
 ## 🛠️ Construído com
 
  - C# na versão do Framework .NET Core 3.1 - Web application ASP NET Core
-
-## 📷 Wiki e imagens do projeto rodando
-
-- Acesse aqui a Wiki do projeto[Wiki](https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory/wiki)
-  
+ 
 ## ⚙️ Executando os testes
 
 - Clone o repositório https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory.git
@@ -54,7 +50,7 @@ O que a API faz:
 - Se usar a opção de depuração "Desafio_API_Web_Asp_Net_Core_EF_InMemory" do Visual Studio, irá exibir a página https://localhost:5001/index.html 🤓 já pré definida.
 - Para acessar os exemplos em json. 
 - Se preferir o POSTMAN - Abra o programa Postman e importe para o programa o arquivo de acordo a sua versão na página  https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory/tree/main/Projeto%20teste%20Postman.
-- Se preferir o INSOMNIA - Abra o programa Insomnia e importe para ele o arquivo disponível na pasta [Projeto teste Insomnia] no endereço: https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory#:~:text=Projeto%20teste%20Insomnia 
+- Se preferir o INSOMNIA - Abra o programa Insomnia e importe para ele o arquivo disponível na pasta [Projeto teste Insomnia] no endereço: https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory/tree/main/Projeto%20teste%20Insomniaa 
 - Execute as requisições HTTP cadastradas. 
 - Voce pode executar as requisições tanto no POSTMAN, no INSOMNIA ou mesmo na própria página do swagger.
 - Abaixo a Descrição detalhada da coleção de exemplos JSON para o POSTMAN
@@ -232,6 +228,8 @@ Usei [GitKraken](https://www.gitkraken.com/git-client) para controle de versão.
 ## ✒️ Autores
 
 * **Marques Silva Fonseca** - 
-- [marquesfonseca](https://github.com/suarezrafael)
+- [marquesfonseca](https://github.com/MarquesFonseca)
+- [Email](mailto:marques-fonseca@hotmail.com)
+- [Email](mailto:marquesfonseca@gmail.com)
 
 
