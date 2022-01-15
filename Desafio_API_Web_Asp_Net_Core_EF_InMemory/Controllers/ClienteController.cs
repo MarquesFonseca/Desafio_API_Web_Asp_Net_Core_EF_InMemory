@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
-    [Route("api/cliente")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class ClienteController : Controller
     {
@@ -37,7 +38,25 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return cliente.FormatarCampos();
         }
 
-        [HttpGet]
+
+        //[HttpGet]//localhost:5000/cliente/nome=marques
+        //[Route("pesquisar/nome/{nomeCliente}")]
+        //public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, [FromQuery]string nomeCliente)
+        //{
+
+        //    var cliente = await context.Clientes
+        //        .Include(x => x.Cidade)
+        //        .AsNoTracking()
+        //        .Where(x => x.NomeCompleto.ToUpper().RemoveAcentos().Contains(nomeCliente.ToUpper().RemoveAcentos()))
+        //        .ToListAsync();
+
+        //    return cliente.FormatarCampos();
+        //}
+
+
+
+
+        [HttpGet]//localhost:5000/cliente/nome=marques
         [Route("pesquisar/nome/{nomeCliente}")]
         public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, string nomeCliente)
         {
@@ -118,7 +137,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="context"></param>
         /// <returns>Produtos</returns>
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Route("alterar/{id:int}")]
         public async Task<ActionResult<Cliente>> AlterarCliente([FromServices] DataContext dataContext, [FromBody] Cliente model, int id)
         {
@@ -177,7 +196,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="context">Representação do nosso banco de dados</param>
         /// <param name="id">Informe o Id desejado para exclusão</param>
         /// <returns>Não retorna nada.</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route("remover/{id:int}")]
         public async Task<IActionResult> RemoverCliente([FromServices] DataContext context, int id)
         {

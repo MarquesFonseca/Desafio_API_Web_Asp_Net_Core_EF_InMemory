@@ -1,18 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
-    [Route("api/cidade")] //Como não definimos nenhuma rota no endPoints(Startup.cs), o mapeamento das rotas serão pela rotas do controller atual
+    [Route("api/[Controller]")] //Como não definimos nenhuma rota no endPoints(Startup.cs), o mapeamento das rotas serão pela rotas do controller atual
     [ApiController] //definindo para a classe Contoller, que usaremos o ApiController
-    public class CidadeyController : ControllerBase
+    public class CidadeController : ControllerBase
     {
+        private readonly IRepositoryCidade _repositoryCidade;
+        public CidadeController(IRepositoryCidade repository)
+        {
+            _repositoryCidade = repository;
+        }
+
         /// <summary>
         /// Retorna uma lista de Cidades, usando o Task de forma assíncrona. 
         /// </summary>
@@ -20,29 +28,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma lista de Cidades</returns>
         [HttpGet]//definindo o verbo utilizado. Se não colocar nada, por padrão ele assume o GET
         [Route("")]//rota vazia, ou seja, será a mesma rota definida no controller
-        public async Task<ActionResult<List<Cidade>>> GetCidades([FromServices] DataContext dataContext)
+        public async Task<ActionResult> GetCity()
         {
-            //é o método responsável por garantir que o squema com o contexxto esteja criado. 
-            //caso não exista, o banco de dados e todo o seu esquema são criados
-            //e também garante que seja compatível com o modelo para este contexto.
-            dataContext.Database.EnsureCreated();
-
-            var cidades = await dataContext.Cidades.AsNoTracking().ToListAsync();
-            return cidades.FormatarCampos();
-        }
-
-        /// <summary>
-        /// Retorna uma Lista de Cidades em ordem Decrescente.
-        /// É um método privado, usado internamente.
-        /// </summary>
-        /// <param name="dataContext">Acessar os dados. o "[FromServices]" indica que vai utilizar o DataContext que já está em memória</param>
-        /// <returns>Retorna uma lista de Cidades em ordem Descrescente</returns>
-        [HttpGet]
-        [Route("")]
-        private async Task<ActionResult<List<Cidade>>> GetCidadeOrderByDesc([FromServices] DataContext dataContext)
-        {
-            var cidades = await dataContext.Cidades.AsNoTracking().OrderByDescending(x => x.Id).ToListAsync();
-            return cidades.FormatarCampos();
+            return Ok(await _repositoryCidade.GetCidades());
         }
 
         /// <summary>
@@ -53,41 +41,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma Cidade</returns>
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<Cidade>> GetCidadeById([FromServices] DataContext context, int id)
+        public async Task<ActionResult<Cidade>> GetCidadeById(int id)
         {
-            var cidade = await context.Cidades.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            return cidade.FormatarCampos();
+            return Ok(await _repositoryCidade.GetCidadeById(id));
         }
 
         [HttpGet]
         [HttpHead]
-        [Route("pesquisar/{nomeCidadeInformada}")]
-        public async Task<ActionResult<List<Cidade>>> GetCidadeByNome([FromServices] DataContext context, string nomeCidadeInformada)
+        [Route("pesquisar/{nome}")]
+        public async Task<ActionResult<List<Cidade>>> GetCidadeByNome(string nome)
         {
-            var cidade = await context.Cidades
-                .AsNoTracking()
-                .Where(x =>
-                x.Nome.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()) ||
-                x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
-                //.Include(x => x.EstadoUF.ToString().ToUpper().Contains(nomeCidadeInformada.ToUpper()))
-                .ToListAsync();
-
-            return cidade.FormatarCampos();
-        }
-
-        /// <summary>
-        /// Verifica se o Id da Cidade existe na base de dados.
-        /// Método privado, só acessa internamente.
-        /// </summary>
-        /// <param name="context">Acessar os dados. o "[FromServices]" indica que vai utilizar o DataContext que já está em memória</param>
-        /// <param name="id">Informe o Id da Cidade desejado.</param>
-        /// <returns>Retorna "Verdadeiro / Falso"</returns>
-        [HttpGet]
-        [Route("{id:int}")]
-        private async Task<ActionResult<bool>> VerificaSeExiste([FromServices] DataContext context, int id)
-        {
-            bool existe = await context.Cidades.AnyAsync(x => x.Id == id);
-            return existe;
+            return Ok(await _repositoryCidade.GetCidadeByNomeOrEstado(nome));
         }
 
         /// <summary>
@@ -99,15 +63,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <returns>Retorna uma lista de todos.</returns>        
         [HttpPost]
         [Route("novo")]
-        public async Task<ActionResult<List<Cidade>>> CreateCidade([FromServices] DataContext context, [FromBody] Cidade model)
+        public async Task<ActionResult<Cidade>> CadastrarCidade([FromBody] Cidade model)
         {
             if (ModelState.IsValid)
             {
-                //System.Guid g = System.Guid.NewGuid();
-                //model.Id = g.ToString();
-                context.Cidades.Add(model);
-                await context.SaveChangesAsync();
-                return await GetCidadeOrderByDesc(context);
+                return Ok(await _repositoryCidade.CadastrarCidade(model));
             }
             else
             {
@@ -122,40 +82,31 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="model">Dados a ser alterado no modelo json pelo body</param>
         /// <param name="id">Informe o Id da Cidade desejada</param>
         /// <returns>Retorna a Cidade já alterada.</returns>
-        [HttpPut("{id}")]
+        [HttpPut]
         [Route("alterar/{id:int}")]
-        public async Task<ActionResult<Cidade>> AlterarCidade([FromServices] DataContext context, [FromBody] Cidade model, int id)
+        public async Task<ActionResult<Cidade>> AlterarCidade([FromBody] Cidade model, int id)
         {
             if (model.Id != id)
             {
                 return BadRequest();
             }
 
-            bool existe = await context.Cidades.AnyAsync(x => x.Id == id);
+            bool existe = await _repositoryCidade.SeExisteCidade(id);
             if (!existe)
                 return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
 
             try
             {
-                context.Entry(model).State = EntityState.Modified;
-                await context.SaveChangesAsync();
+                await _repositoryCidade.AlterarCidade(model);
             }
-            catch (DbUpdateConcurrencyException)
-            {                
-                var cidade = await context.Cidades.FindAsync(id);
-                if (cidade == null)
-                {
-                    //return BadRequest();
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //return BadRequest();
+                return NotFound(ex);
             }
 
-            var retorno = await context.Cidades.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            return retorno.FormatarCampos();
+            var retorno = await _repositoryCidade.GetCidadeById(id);
+            return retorno;
         }
 
         /// <summary>
@@ -164,11 +115,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         /// <param name="context">Representação do nosso banco de dados</param>
         /// <param name="id">Informe o Id desejado para exclusão</param>
         /// <returns>Não retorna nada.</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route("remover/{id:int}")]
-        public async Task<IActionResult> RemoverCidade([FromServices] DataContext context, int id)
+        public async Task<IActionResult> RemoverCidade(int id)
         {
-            var cidadeAtual = await context.Cidades.FindAsync(id);
+            var cidadeAtual = await _repositoryCidade.GetCidadeById(id);
             if (cidadeAtual == null)
             {
                 //return BadRequest();
@@ -177,10 +128,15 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 
             try
             {
-                context.Cidades.Remove(cidadeAtual);
-                await context.SaveChangesAsync();
+                if (await _repositoryCidade.RemoverCidade(id))
+                {
+                    return Ok("A Cidade removida com sucesso!");
+                }
+                else
+                {
+                    return BadRequest("Não foi possível remover a Cidade.");
+                }
 
-                return Ok("A Cidade removida com sucesso!");
             }
             catch (Exception)
             {

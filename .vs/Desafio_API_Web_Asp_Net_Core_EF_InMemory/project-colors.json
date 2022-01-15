@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "e5efb00f-42e7-4ef6-8801-2c72b554c50d": {
+      "ProjectGuid": "e5efb00f-42e7-4ef6-8801-2c72b554c50d",
+      "DisplayName": "Desafio_API_Web_Asp_Net_Core_EF_InMemory",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

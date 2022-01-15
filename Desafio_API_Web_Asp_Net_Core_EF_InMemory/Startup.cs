@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.Extensions.Options;
+using System.Reflection;
+using System.IO;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Services;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 {
@@ -28,9 +24,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Informar para nossa aplicação que temos um DataContext,
+        /// Informar para nossa aplicaï¿½ï¿½o que temos um DataContext,
         /// e que vamos trabalhar com o Entity Framework,
-        /// e que usaremos nosso banco de dados em memória.
+        /// e que usaremos nosso banco de dados em memï¿½ria.
         /// Estamos dando o nome para o nosso banco de dados de "DataBase"
         /// </summary>
         /// <param name="services"></param>
@@ -38,13 +34,15 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
         {
             services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("DataBase"));
 
-            //Deixar nosso DatContext disponível através do "AddScoped", que é a nossa injeção de dependências do .net Core.
-            //Significa que, se em algum lugar da nossa aplicação solicitar o DataContext, vai deixar em memória,
-            //onde não cria uma nova versão toda vez que requisitar, ou seja, não vai abri uma nova conexão no banco.
-            //e assim que a requisição terminar, a aplicação vai destruir o DataContext, para não deixar vestígios na memória.
+            //Deixar nosso DatContext disponï¿½vel atravï¿½s do "AddScoped", que ï¿½ a nossa injeï¿½ï¿½o de dependï¿½ncias do .net Core.
+            //Significa que, se em algum lugar da nossa aplicaï¿½ï¿½o solicitar o DataContext, vai deixar em memï¿½ria,
+            //onde nï¿½o cria uma nova versï¿½o toda vez que requisitar, ou seja, nï¿½o vai abri uma nova conexï¿½o no banco.
+            //e assim que a requisiï¿½ï¿½o terminar, a aplicaï¿½ï¿½o vai destruir o DataContext, para nï¿½o deixar vestï¿½gios na memï¿½ria.
             services.AddScoped<DataContext, DataContext>();
+            services.AddTransient<IRepositoryCidade, RepositoryCidade>();
             services.AddControllers();
-            
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -71,16 +69,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 
             app.UseAuthorization();
 
-            app.UseSwagger();
-            // Swagger JSON endpoint
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+           app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
         }
     }
