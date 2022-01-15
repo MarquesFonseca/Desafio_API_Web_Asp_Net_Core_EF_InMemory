@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Microsoft.EntityFrameworkCore;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
 {

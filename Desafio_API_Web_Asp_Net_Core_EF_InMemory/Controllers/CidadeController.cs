@@ -1,13 +1,9 @@
-﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
@@ -23,10 +19,11 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         }
 
         /// <summary>
-        /// Retorna uma lista de Cidades, usando o Task de forma assíncrona. 
+        /// Obter todos os cidades.
         /// </summary>
-        /// <param name="dataContext">Acessar os dados. o "[FromServices]" indica que vai utilizar o DataContext que já está em memória</param>
-        /// <returns>Retorna uma lista de Cidades</returns>
+        /// <response code="200">A lista de cidades foi obtida com sucesso.</response>
+        /// <response code="500">Ocorreu um erro ao obter a lista de cidades.</response>
+        /// <returns>Retorna uma lista de cidades.</returns> 
         [HttpGet]//definindo o verbo utilizado. Se não colocar nada, por padrão ele assume o GET
         [Route("")]//rota vazia, ou seja, será a mesma rota definida no controller
         public async Task<ActionResult> GetCity()
@@ -35,11 +32,13 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         }
 
         /// <summary>
-        /// Retorna uma Cidade informando o Id da Cidade desejada
+        /// Obter uma cidade específica pelo seu Id.
         /// </summary>
-        /// <param name="context">Acessar os dados. o "[FromServices]" indica que vai utilizar o DataContext que já está em memória</param>
-        /// <param name="id">Informe o Id da Cidade desejado</param>
-        /// <returns>Retorna uma Cidade</returns>
+        /// <param name="id">Id da cidade.</param>
+        /// <response code="200">O cliente foi obtido com sucesso.</response>
+        /// <response code="404">Não foi encontrada cidade com Id especificado.</response>
+        /// <response code="500">Ocorreu um erro ao obter o usuário.</response>
+        /// <returns>Retorna uma cidade.</returns> 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<Cidade>> GetCidadeById(int id)
@@ -47,6 +46,14 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             return Ok(await _repositoryCidade.GetCidadeById(id));
         }
 
+        /// <summary>
+        /// Obter uma cidade pesquisando pelo seu nome ou parte do nome.
+        /// </summary>
+        /// <param name="nome">Nome ou parte do nome desejado na busca</param>
+        /// <response code="200">As cidades com a busca foram obtidos com sucesso.</response>
+        /// <response code="404">Não foi encontrada cidade com nome buscado.</response>
+        /// <response code="500">Ocorreu um erro ao obter a lista de cidades.</response>
+        /// <returns>Retorna uma cidade.</returns> 
         [HttpGet]
         [HttpHead]
         [Route("pesquisar/{nome}")]
@@ -56,19 +63,26 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         }
 
         /// <summary>
-        /// Grava na base uma nova Cidade.
-        /// E retorna toda a lista das Cidades já cadastradas.
+        /// Cadastrar uma nova cidade.
         /// </summary>
-        /// <param name="context">Representação do banco de dados em memória</param>
-        /// <param name="model">Modelo via json passado pelo Body</param>
-        /// <returns>Retorna uma lista de todos.</returns>        
+        /// <param name="cidade">Modelo do objeto cidade pelo body.</param>
+        /// <response code="200">A cidade foi cadastrado com sucesso.</response>
+        /// <response code="400">O modelo da cidade enviado é inválido.</response>
+        /// <response code="500">Ocorreu um erro ao cadastrar a cidade.</response>
+        /// <returns>Retorna a cidade recém inserido.</returns>
+        /// <returns>Após gravar uma nova cidade, retorna ele mesmo.</returns> 
         [HttpPost]
         [Route("novo")]
-        public async Task<ActionResult<Cidade>> CadastrarCidade([FromBody] Cidade model)
+        public async Task<ActionResult<Cidade>> CadastrarCidade([FromBody] Cidade cidade)
         {
+            if (cidade is null)
+            {
+                throw new ArgumentNullException(nameof(cidade));
+            }
+
             if (ModelState.IsValid)
             {
-                return Ok(await _repositoryCidade.CadastrarCidade(model));
+                return Ok(await _repositoryCidade.CadastrarCidade(cidade));
             }
             else
             {
@@ -77,23 +91,26 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         }
 
         /// <summary>
-        /// Altera os dados da Cidade atual
-        /// </summary>
-        /// <param name="context">Representação do banco de dados</param>
-        /// <param name="model">Dados a ser alterado no modelo json pelo body</param>
-        /// <param name="id">Informe o Id da Cidade desejada</param>
-        /// <returns>Retorna a Cidade já alterada.</returns>
+        /// Alterar Cidade.
+        /// </summary> 
+        /// <param name="id">Id da cidade.</param>
+        /// <param name="cidade">Modelo da cidade.</param>
+        /// <response code="200">A cidade foi alterado com sucesso.</response>
+        /// <response code="400">O modelo da cidade enviado é inválido.</response>
+        /// <response code="404">Não foi encontrada cidade com ID especificado.</response>
+        /// <response code="500">Ocorreu um erro ao alterar a cidade.</response>
+        /// <returns>Retorna uma cidade já alterado.</returns> 
         [HttpPut]
         [Route("alterar/{id:int}")]
-        public async Task<ActionResult<Cidade>> AlterarCidade([FromBody] Cidade model, int id)
+        public async Task<ActionResult<Cidade>> AlterarCidade([FromBody] Cidade cidade, int id)
         {
             bool existe = await _repositoryCidade.SeExisteCidade(id);
             if (!existe)
-                return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
+                return NotFound("Não foi possível gravar os dados da cidade. Cidade Inválida.");
 
             try
             {
-                await _repositoryCidade.AlterarCidade(model, id);
+                await _repositoryCidade.AlterarCidade(cidade, id);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -106,11 +123,13 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         }
 
         /// <summary>
-        /// Deleta/Remove a Cidade repassando via "Rota" o id desejado para exclusão
+        /// Remover Cidade.
         /// </summary>
-        /// <param name="context">Representação do nosso banco de dados</param>
-        /// <param name="id">Informe o Id desejado para exclusão</param>
-        /// <returns>Não retorna nada.</returns>
+        /// <param name="id">Id da Cidade.</param>
+        /// <response code="200">A Cidade foi removida com sucesso.</response>
+        /// <response code="404">Não foi encontrada cidade com ID especificado.</response>
+        /// <response code="500">Ocorreu um erro ao remover a cidade.</response>
+        /// <returns>Retorna um resultado da remoção.</returns> 
         [HttpDelete]
         [Route("remover/{id:int}")]
         public async Task<IActionResult> RemoverCidade(int id)

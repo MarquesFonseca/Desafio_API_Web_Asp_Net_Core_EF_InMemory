@@ -1,14 +1,11 @@
-﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 {
@@ -19,7 +16,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
         {
             _dataContext = dataContext;
             _dataContext.Database.EnsureCreated();
-        }        
+        }
+
+        #region Chamadas pelo GET Construtor
 
         public async Task<List<Cidade>> GetCidades()
         {
@@ -63,6 +62,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
             return existe;
         }
 
+        #endregion
+
+        #region Chamadas pelo POST no Construtor
         public async Task<Cidade> CadastrarCidade(Cidade model)
         {
             //System.Guid g = System.Guid.NewGuid();
@@ -71,7 +73,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
             await _dataContext.SaveChangesAsync();
             return await GetCidadeByModel(model);
         }
+        #endregion
 
+        #region Chamadas pelo PUT no Contrutor        
         public async Task<Cidade> AlterarCidade(Cidade model, int id)
         {
             try
@@ -87,7 +91,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 
             return await GetCidadeByModel(model);
         }
+        #endregion
 
+        #region Chamadas pelo DELETE no Construtor
         public async Task<bool> RemoverCidade(int id)
         {
             try
@@ -102,23 +108,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
                 return false;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #endregion
 
         #region Dispose
         public void Dispose()

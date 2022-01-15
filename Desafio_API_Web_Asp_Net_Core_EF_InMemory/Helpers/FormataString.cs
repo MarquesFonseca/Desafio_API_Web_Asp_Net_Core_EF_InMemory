@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Globalization;
-using System.Collections;
 
-namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils
+namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers
 {
     /// <summary>
     /// Classe com Extension Methods para manupulação de strings.

@@ -1,14 +1,11 @@
-﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 {
@@ -22,6 +19,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
             _dataContext.Database.EnsureCreated();
         }
 
+        #region Chamadas pelo GET do Construtor
         public async Task<List<Cliente>> GetClientes()
         {
             var clientes = await _dataContext.Clientes
@@ -68,7 +66,9 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
             bool existe = await _dataContext.Clientes.AnyAsync(x => x.Id == id);
             return existe;
         }
+        #endregion
 
+        #region Chamadas pelo POST do Construtor
         public async Task<bool> CadastrarCliente(Cliente _cliente)
         {
             try
@@ -81,12 +81,14 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
         }
+        #endregion
 
+        #region Chamadas pelo PUT do Construtor
         public async Task<Cliente> AlterarCliente(Cliente _cliente, int id)
         {
             try
@@ -103,12 +105,14 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 
                 return _cliente;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return _cliente;
             }
         }
+        #endregion
 
+        #region Chamadas pelo DELETE do Construtor
         public async Task<bool> RemoverCliente(int id)
         {
             try
@@ -123,43 +127,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 
             return true;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #endregion
 
         #region Dispose
         public void Dispose()

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
 using System.Collections.Generic;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers
 {

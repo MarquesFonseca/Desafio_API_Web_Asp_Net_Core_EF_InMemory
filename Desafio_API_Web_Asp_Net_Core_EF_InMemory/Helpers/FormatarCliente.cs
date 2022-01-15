@@ -1,5 +1,4 @@
 ﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +15,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers
         {
             if (_cliente == null) return _cliente;
             _cliente.NomeCompleto = _cliente.NomeCompleto.Trim().IniciaisMaiusculoDeCadaPalavra();
-            _cliente.Idade = Utils.FormatacaoData.RetornaIdade(Convert.ToDateTime(_cliente.DataNascimento));
+            _cliente.Idade = FormatacaoData.RetornaIdade(Convert.ToDateTime(_cliente.DataNascimento));
             _cliente.DataNascimento = Convert.ToDateTime(_cliente.DataNascimento.ToShortDateString());
             return _cliente;
         }

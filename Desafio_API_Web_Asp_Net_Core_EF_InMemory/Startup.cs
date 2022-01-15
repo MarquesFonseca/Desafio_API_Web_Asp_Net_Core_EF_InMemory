@@ -1,16 +1,14 @@
-using System;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.IO;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
+using System;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 {

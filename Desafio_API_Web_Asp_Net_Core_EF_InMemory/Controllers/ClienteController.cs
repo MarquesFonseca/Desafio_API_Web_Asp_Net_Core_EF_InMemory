@@ -1,13 +1,10 @@
-﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
+﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
@@ -95,7 +92,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         [Route("novo")]
         public async Task<ActionResult<Cliente>> CreateCidade([FromBody] Cliente cliente)
         {
-            if (Utils.FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
+            if (FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
                 return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
 
             bool existeACidadeInformada = await _repositoryCidade.SeExisteCidade(cliente.CidadeId);
@@ -145,7 +142,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
         public async Task<ActionResult<Cliente>> AlterarCliente([FromBody] Cliente cliente, int id)
         {
             #region verifica se a data é válida
-            if (Utils.FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
+            if (FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
                 return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
             #endregion
 
