@@ -20,7 +20,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data
         /// <param name="options">Neste caso, não repassaremos nenhuma ação para o DataContext.</param>
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            
         }
 
         /// <summary>

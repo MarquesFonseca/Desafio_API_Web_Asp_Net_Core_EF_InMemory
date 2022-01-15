@@ -1,4 +1,5 @@
 ﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;

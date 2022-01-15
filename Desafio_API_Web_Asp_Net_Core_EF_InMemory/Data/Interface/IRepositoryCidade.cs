@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
+namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface
 {
     public interface IRepositoryCidade
     {

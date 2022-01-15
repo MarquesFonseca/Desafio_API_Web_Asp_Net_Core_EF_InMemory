@@ -1,7 +1,8 @@
 ﻿using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Helpers;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Models;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,96 +14,91 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class ClienteController : Controller
+    public class ClienteController : ControllerBase
     {
-        [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<List<Cliente>>> GetClientes([FromServices] DataContext context)
+        private readonly IRepositoryCliente _repositoryCliente;
+        private readonly IRepositoryCidade _repositoryCidade;
+        public ClienteController(IRepositoryCliente repositoryCliente, IRepositoryCidade repositoryCidade)
         {
-            var clientes = await context.Clientes
-                .Include(x => x.Cidade)
-                .AsNoTracking()
-                .ToListAsync();
-
-            return clientes.FormatarCampos();
-        }        
-
-        [HttpGet]
-        [Route("{id:int}")]
-        public async Task<ActionResult<Cliente>> GetClienteById([FromServices] DataContext context, int id)
-        {
-            var cliente = await context.Clientes
-                .Include(x => x.Cidade)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
-            return cliente.FormatarCampos();
+            _repositoryCliente = repositoryCliente;
+            _repositoryCidade = repositoryCidade;
         }
 
-
-        //[HttpGet]//localhost:5000/cliente/nome=marques
-        //[Route("pesquisar/nome/{nomeCliente}")]
-        //public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, [FromQuery]string nomeCliente)
-        //{
-
-        //    var cliente = await context.Clientes
-        //        .Include(x => x.Cidade)
-        //        .AsNoTracking()
-        //        .Where(x => x.NomeCompleto.ToUpper().RemoveAcentos().Contains(nomeCliente.ToUpper().RemoveAcentos()))
-        //        .ToListAsync();
-
-        //    return cliente.FormatarCampos();
-        //}
-
-
-
-
-        [HttpGet]//localhost:5000/cliente/nome=marques
-        [Route("pesquisar/nome/{nomeCliente}")]
-        public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto([FromServices] DataContext context, string nomeCliente)
+        /// <summary>
+        /// Obter todos os Clientes.
+        /// </summary>
+        /// <response code="200">A lista de clientes foi obtida com sucesso.</response>
+        /// <response code="500">Ocorreu um erro ao obter a lista de clientes.</response>
+        /// <returns>Retorna uma lista de clientes.</returns> 
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult> GetClients()
         {
+            return Ok(await _repositoryCliente.GetClientes());
+        }
 
-            var cliente = await context.Clientes
-                .Include(x => x.Cidade)
-                .AsNoTracking()
-                .Where(x => x.NomeCompleto.ToUpper().RemoveAcentos().Contains(nomeCliente.ToUpper().RemoveAcentos()))
-                .ToListAsync();
+        /// <summary>
+        /// Obter um cliente específico pelo seu Id.
+        /// </summary>
+        /// <param name="id">Id do cliente.</param>
+        /// <response code="200">O cliente foi obtido com sucesso.</response>
+        /// <response code="404">Não foi encontrado cliente com Id especificado.</response>
+        /// <response code="500">Ocorreu um erro ao obter o usuário.</response>
+        /// <returns>Retorna um clientes.</returns> 
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<ActionResult<Cliente>> GetClienteById(int id)
+        {
+            return Ok(await _repositoryCliente.GetClienteById(id));
+        }
 
-            return cliente.FormatarCampos();
+        /// <summary>
+        /// Obter um cliente pesquisando pelo seu nome ou parte do nome.
+        /// </summary>
+        /// <param name="nomeCliente">Nome ou parte do nome desejado na busca</param>
+        /// <response code="200">Os clientes com a busca foram obtidos com sucesso.</response>
+        /// <response code="404">Não foi encontrado cliente com nome buscado.</response>
+        /// <response code="500">Ocorreu um erro ao obter a lista de clientes.</response>
+        /// <returns>Retorna um cliente.</returns> 
+        [HttpGet]
+        [Route("pesquisar/nome/{nomeCliente}")]
+        public async Task<ActionResult<List<Cliente>>> GetClienteByParteNomeCompleto(string nomeCliente)
+        {
+            return Ok(await _repositoryCliente.GetClienteByParteNomeCompleto(nomeCliente));
         }
 
         /// <summary>
         /// Retorna todos os clientes de uma cidade específica
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="CidadeId"></param>
-        /// <returns>Retorna uma lista de clientes de uma mesma cidade.</returns>
+        /// <param name="CidadeId">Id da cidade desejada.</param>
+        /// <response code="200">Os clientes foram obtidos com sucesso.</response>
+        /// <response code="404">Não foi encontrado clientes com Id da cidade informada.</response>
+        /// <response code="500">Ocorreu um erro ao obter ao clientes da cidade informada.</response>
+        /// <returns>Retorna uma lista de clientes de uma mesma cidade.</returns>       
         [HttpGet]
         [Route("pesquisar/cidade/{CidadeId:int}")]
-        public async Task<ActionResult<List<Cliente>>> GetClientesByCidadeId([FromServices] DataContext context, int CidadeId)
+        public async Task<ActionResult<List<Cliente>>> GetClientesByCidadeId(int CidadeId)
         {
-            var clientes = await context.Clientes
-                .Include(x => x.Cidade)
-                .AsNoTracking()
-                .Where(x => x.CidadeId == CidadeId)
-                .ToListAsync();
-
-            return clientes.FormatarCampos();
+            return Ok(await _repositoryCliente.GetClientesByCidadeId(CidadeId));
         }
 
         /// <summary>
-        /// Insere um novo Cliente
+        /// Cadastrar um cliente.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="model"></param>
+        /// <param name="cliente">Modelo do cliente pelo body.</param>
+        /// <response code="200">O cliente foi cadastrado com sucesso.</response>
+        /// <response code="400">O modelo do cliente enviado é inválido.</response>
+        /// <response code="500">Ocorreu um erro ao cadastrar o cliente.</response>
         /// <returns>Retorna o Cliente recém inserido.</returns>
+        /// <returns>Após gravar o novo cliente, retorna ele mesmo.</returns> 
         [HttpPost]
         [Route("novo")]
-        public async Task<ActionResult<Cliente>> CreateCidade([FromServices] DataContext context, [FromBody] Cliente model)
+        public async Task<ActionResult<Cliente>> CreateCidade([FromBody] Cliente cliente)
         {
-            if (Utils.FormatacaoData.VerificaDataSeValida(model.DataNascimento) == false)
+            if (Utils.FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
                 return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
 
-            bool existeACidadeInformada = await context.Cidades.AnyAsync(x => x.Id == model.CidadeId);
+            bool existeACidadeInformada = await _repositoryCidade.SeExisteCidade(cliente.CidadeId);
             if (existeACidadeInformada == false)//vai inserir um novo cliente se existir a cidade informada.
                 return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
 
@@ -110,15 +106,17 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    model.FormatarCampos();
+                    if (await _repositoryCliente.CadastrarCliente(cliente))
+                    {
 
-                    model.Cidade = await context.Cidades.FindAsync(model.CidadeId);                    
-                    model.DataCadastro = DateTime.Now;
-
-                    context.Clientes.Add(model);
-                    await context.SaveChangesAsync();
-
-                    return model;
+                        //var clienteJaCadastrado = await _repositoryCliente.GetClienteById(_cliente.Id);
+                        cliente.Cidade = await _repositoryCidade.GetCidadeById(cliente.CidadeId);
+                        return cliente;
+                    }
+                    else
+                    {
+                        return BadRequest("Não foi possível cadastrar a cidade informada.");
+                    }
                 }
                 else
                 {
@@ -131,76 +129,69 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                     "Ocorreu um erro ao gravar o registro.!");
             }
         }
+        
         /// <summary>
-        /// Retorna todos os clientes cadastrados
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns>Produtos</returns>
-
+        /// Alterar cliente.
+        /// </summary> 
+        /// <param name="id">Id do Cliente.</param>
+        /// <param name="cliente">Modelo do Cliente.</param>
+        /// <response code="200">O Cliente foi alterado com sucesso.</response>
+        /// <response code="400">O modelo do cliente enviado é inválido.</response>
+        /// <response code="404">Não foi encontrado cliente com ID especificado.</response>
+        /// <response code="500">Ocorreu um erro ao alterar o cliente.</response>
+        /// <returns>Retorna o cliente já alterado.</returns> 
         [HttpPut]
         [Route("alterar/{id:int}")]
-        public async Task<ActionResult<Cliente>> AlterarCliente([FromServices] DataContext dataContext, [FromBody] Cliente model, int id)
+        public async Task<ActionResult<Cliente>> AlterarCliente([FromBody] Cliente cliente, int id)
         {
             #region verifica se a data é válida
-            if (Utils.FormatacaoData.VerificaDataSeValida(model.DataNascimento) == false)
+            if (Utils.FormatacaoData.VerificaDataSeValida(cliente.DataNascimento) == false)
                 return NotFound("Não foi possível gravar os dados do cliente. \nCidade Inválida.\nInform no fomrato 'ano-mes-dia'");
             #endregion
 
             #region verifica se a cidade informada existe
-            bool existeACidadeInformada = await dataContext.Cidades.AnyAsync(x => x.Id == model.CidadeId);
-            if (existeACidadeInformada == false)//vai inserir um novo cliente se existir a cidade informada.
+            bool existeACidadeInformada = await _repositoryCidade.SeExisteCidade(cliente.CidadeId);
+            if (existeACidadeInformada == false)//vai alterar um cliente se existir a cidade informada.
                 return NotFound("Não foi possível gravar os dados do cliente. Cidade Inválida.");
             #endregion
 
             #region Verifica se o cliente existe no banco
-            bool existe = await dataContext.Clientes.AnyAsync(x => x.Id == id);
+            bool existe = await _repositoryCliente.SeExisteCliente(id);
             if (!existe)
-                return NotFound("Cliente não encontrado");
+                return NotFound("Cliente não encontrado!");
             #endregion
 
-            if (model.Id != id)
+            if (cliente.Id != id)
             {
                 return BadRequest();
             }
 
-            var cliente = new Cliente();
-
             try
             {
-                model.FormatarCampos();
-
-                model.Cidade = await dataContext.Cidades.FindAsync(model.CidadeId);
-                model.DataCadastro = DateTime.Now;
-
-                dataContext.Entry(model).State = EntityState.Modified;
-                await dataContext.SaveChangesAsync();
+                await _repositoryCliente.AlterarCliente(cliente);
+                cliente.Cidade = await _repositoryCidade.GetCidadeById(cliente.CidadeId);
+                return cliente;
             }
             catch (DbUpdateConcurrencyException)
             {
-                cliente = await dataContext.Clientes.FindAsync(id);
-                if (cliente == null)
-                    //return BadRequest();
-                    return NotFound("Ocorreu um erro ao alterar o cliente atual. Não foi possível retornar o cliente.");
-                else
-                    return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError,
-                    "Ocorreu um erro ao remover o registro.!");
+                return NotFound("Ocorreu um erro ao alterar o cliente atual. Não foi possível retornar o cliente.");
             }
-
-            var retorno = await GetClienteById(dataContext, id);
-            return retorno;
         }
 
         /// <summary>
-        /// Deleta/Remove um cliente repassando via "Rota" o id desejado para exclusão
+        /// Remover usuário.
         /// </summary>
-        /// <param name="context">Representação do nosso banco de dados</param>
-        /// <param name="id">Informe o Id desejado para exclusão</param>
-        /// <returns>Não retorna nada.</returns>
+        /// <param name="id">ID do cliente.</param>
+        /// <response code="200">O cliente foi deletado com sucesso.</response>
+        /// <response code="404">Não foi encontrado cliente com ID especificado.</response>
+        /// <response code="500">Ocorreu um erro ao remover o cliente.</response>
+        /// <returns>Retorna um resultado da remoção.</returns> 
         [HttpDelete]
         [Route("remover/{id:int}")]
-        public async Task<IActionResult> RemoverCliente([FromServices] DataContext context, int id)
+        public async Task<IActionResult> RemoverCliente(int id)
         {
-            var clienteAtual = await context.Clientes.FindAsync(id);
+
+            var clienteAtual = await _repositoryCliente.GetClienteById(id);
             if (clienteAtual == null)
             {
                 //return BadRequest();
@@ -209,11 +200,10 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 
             try
             {
-                context.Clientes.Remove(clienteAtual);
-                await context.SaveChangesAsync();
-
-                //return NotFound("Cliente removida com sucesso!");
-                return Ok("Cliente removida com sucesso!");
+                if (await _repositoryCliente.RemoverCliente(id))
+                    return Ok("Cliente removida com sucesso!");
+                else
+                    return NotFound("Ocorreu um erro ao remover o registro.");
             }
             catch (Exception)
             {

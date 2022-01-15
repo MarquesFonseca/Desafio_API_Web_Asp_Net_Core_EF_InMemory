@@ -9,8 +9,8 @@ using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
-using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Services;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
 {
@@ -40,6 +40,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory
             //e assim que a requisi��o terminar, a aplica��o vai destruir o DataContext, para n�o deixar vest�gios na mem�ria.
             services.AddScoped<DataContext, DataContext>();
             services.AddTransient<IRepositoryCidade, RepositoryCidade>();
+            services.AddTransient<IRepositoryCliente, RepositoryCliente>();
             services.AddControllers();
 
 

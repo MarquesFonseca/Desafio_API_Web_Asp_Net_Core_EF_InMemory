@@ -8,23 +8,18 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Utils;
+using Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface;
 
 namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Repository
 {
     public class RepositoryCidade : IRepositoryCidade, IDisposable
     {
         private readonly DataContext _dataContext;
-
         public RepositoryCidade(DataContext dataContext)
         {
             _dataContext = dataContext;
-
-            //é o método responsável por garantir que o squema com o contexxto esteja criado. 
-            //caso não exista, o banco de dados e todo o seu esquema são criados
-            //e também garante que seja compatível com o modelo para este contexto.
             _dataContext.Database.EnsureCreated();
-        }
-
+        }        
 
         public async Task<List<Cidade>> GetCidades()
         {
