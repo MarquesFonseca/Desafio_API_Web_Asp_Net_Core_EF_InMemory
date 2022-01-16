@@ -110,7 +110,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 
             try
             {
-                await _repositoryCidade.AlterarCidade(cidade, id);
+                return Ok(await _repositoryCidade.AlterarCidade(cidade, id));
             }
             catch (DbUpdateConcurrencyException ex)
             {
