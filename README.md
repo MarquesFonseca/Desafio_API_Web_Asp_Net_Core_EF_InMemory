@@ -31,7 +31,7 @@ O que a API faz:
 
 - Instalar [VisualStudio 2019 Community](https://visualstudio.microsoft.com/pt-br/thank-you-downloading-visual-studio/?sku=Community&rel=16) 
 - Instalar Carga de Trabalho no Visual Studio Aplicações Web em .NET Core
-- Instalar o pacote do [Swagger] na versão 5.6.3 na linha de comando [dotnet add package Swashbuckle.AspNetCore --version 5.6.3] - ou pelo pelo [Nuget] do próprio gerenciador de pacotes do Visual Studio.
+- Instalar o pacote do [Swagger] na versão 5.6.3 na linha de comando [dotnet add package Swashbuckle.AspNetCore --version 5.6.3] - ou pelo [Nuget] do próprio gerenciador de pacotes do Visual Studio.
 - Instalar o pacore do [Microsoft.EntityFrameworkCore.InMemory] na versão 5.0.13 na linha de comando [dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 5.0.13] - ou pelo pelo [Nuget] do próprio gerenciador de pacotes do Visual Studio.
 - Instalar o pacore do [Microsoft.EntityFrameworkCore] na versão 5.0.13 na linha de comando [dotnet add package Microsoft.EntityFrameworkCore --version 5.0.13] - ou pelo pelo [Nuget] do próprio gerenciador de pacotes do Visual Studio.
 - Instalar [POSTMAN Cliente](https://www.postman.com/downloads/) ou 
