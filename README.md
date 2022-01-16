@@ -53,8 +53,9 @@ O que a API faz:
 - Se preferir o INSOMNIA - Abra o programa Insomnia e importe para ele o arquivo disponível na pasta [Projeto teste Insomnia] no endereço: https://github.com/MarquesFonseca/Desafio_API_Web_Asp_Net_Core_EF_InMemory/tree/main/Projeto%20teste%20Insomniaa 
 - Execute as requisições HTTP cadastradas. 
 - Voce pode executar as requisições tanto no POSTMAN, no INSOMNIA ou mesmo na própria página do swagger.
-- Abaixo a Descrição detalhada da coleção de exemplos JSON para o POSTMAN
-[x] Pasta Cidade
+- Abaixo a Descrição detalhada da coleção de exemplos JSON para o POSTMAN.
+
+Pasta Cidade:
 - [x] Visualizar cidades
    - Lista todas as cidades já pré inseridas no banco.
    - https://localhost:5001/api/cidade
@@ -137,9 +138,9 @@ O que a API faz:
 - [x] Remover cidade Id 3
    - https://localhost:5001/api/cidade/remover/3
 
-----------------------------------------------------------------------
-   
-[x] Pasta Cliente
+--------------------------------------------------------------------
+
+Pasta Cliente:
 - [x] Visualizar Clientes
    - Lista todas os clientes já pré inseridas no banco.
    - https://localhost:5001/api/clientes
