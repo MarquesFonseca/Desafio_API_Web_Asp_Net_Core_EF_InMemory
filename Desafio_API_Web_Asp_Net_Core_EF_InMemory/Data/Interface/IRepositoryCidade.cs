@@ -15,6 +15,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Data.Interface
         public Task<Cidade> GetCidadeByModel(Cidade model);
 
         public Task<List<Cidade>> GetCidadeByNomeOrEstado(string nome);
+        
         public Task<bool> SeExisteCidade(int id);
 
         public Task<Cidade> CadastrarCidade(Cidade model);
