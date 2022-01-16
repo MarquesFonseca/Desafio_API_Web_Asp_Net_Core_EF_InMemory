@@ -108,7 +108,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
 
                         //var clienteJaCadastrado = await _repositoryCliente.GetClienteById(_cliente.Id);
                         cliente.Cidade = await _repositoryCidade.GetCidadeById(cliente.CidadeId);
-                        return cliente;
+                        return Ok(cliente);
                     }
                     else
                     {
@@ -162,7 +162,7 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
             {
                 await _repositoryCliente.AlterarCliente(cliente, id);
                 cliente.Cidade = await _repositoryCidade.GetCidadeById(cliente.CidadeId);
-                return cliente;
+                return Ok(cliente);
             }
             catch (DbUpdateConcurrencyException)
             {
