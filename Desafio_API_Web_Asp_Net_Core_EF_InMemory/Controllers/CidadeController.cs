@@ -117,9 +117,6 @@ namespace Desafio_API_Web_Asp_Net_Core_EF_InMemory.Controllers
                 //return BadRequest();
                 return NotFound(ex);
             }
-
-            var retorno = await _repositoryCidade.GetCidadeById(id);
-            return retorno;
         }
 
         /// <summary>
